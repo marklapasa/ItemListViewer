@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ItemListViewer</string>
+    <string name="item_list_viewer">Item List Viewer</string>
+    <string name="flat">Flat</string>
+    <string name="grouped">Grouped</string>
+    <string name="alphabetical_sort">Alphabetical Sort</string>
+    <string name="more">More</string>
+    <string name="numerical_sort">Numerical Sort</string>
+    <string name="flat_list">Flat List</string>
+    <string name="grouped_list">Grouped List</string>
+    <string name="loading">Loading...</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
+    <string name="unknown">Unknown</string>
+</resources>
