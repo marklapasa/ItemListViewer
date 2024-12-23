@@ -13,6 +13,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -77,11 +78,12 @@ fun FlatListView(modifier: Modifier = Modifier, model: FlatListViewModel) =
 @Composable
 fun ListViewPreview() {
     val snackbarHostState = remember { SnackbarHostState() }
+    val sortRule = remember { mutableStateOf(SortRule.NUMERICAL) }
     ItemListViewerTheme {
         FlatListView(
             model = FlatListViewModel(
                 repository = EmbeddedItemRepository,
-                sortRule = SortRule.NUMERICAL,
+                sortRule = sortRule,
                 snackbarHostState = snackbarHostState
             )
         )

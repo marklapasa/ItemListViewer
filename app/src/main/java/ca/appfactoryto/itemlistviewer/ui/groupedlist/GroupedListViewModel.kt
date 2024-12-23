@@ -2,6 +2,8 @@ package ca.appfactoryto.itemlistviewer.ui.groupedlist
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ca.appfactoryto.itemlistviewer.domain.GroupedItem
@@ -9,8 +11,6 @@ import ca.appfactoryto.itemlistviewer.domain.Item
 import ca.appfactoryto.itemlistviewer.domain.ItemListRepository
 import ca.appfactoryto.itemlistviewer.ui.SortUtil
 import ca.appfactoryto.itemlistviewer.ui.app.SortRule
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
@@ -19,21 +19,19 @@ import java.net.UnknownHostException
  */
 class GroupedListViewModel(
     private val repository: ItemListRepository,
-    private val sortRule: SortRule,
+    private val sortRule: State<SortRule>,
     private val snackbarHostState: SnackbarHostState
 ) : ViewModel() {
-
-    private val _groupedItems = MutableStateFlow<List<GroupedItem>>(emptyList())
 
     /**
      * The list of grouped items to be displayed in the UI.
      */
-    val groupedItems: StateFlow<List<GroupedItem>> = _groupedItems
+    val groupedItems = mutableStateListOf<GroupedItem>()
 
     /**
      * The state of the LazyList used to display the grouped items.
      */
-    val listState : LazyListState = LazyListState()
+    val listState: LazyListState = LazyListState()
 
     /**
      * When the User taps on an item, it will show a snackbar with the item's details
@@ -53,16 +51,21 @@ class GroupedListViewModel(
     val sublistColumns = 3 // 3 is ideal for portrait mode but for landscape mode it could be more
 
     init {
+        refresh()
+    }
+
+    fun refresh() {
         viewModelScope.launch {
             try {
-                SortUtil.prepare(repository.fetchAll(), sortRule).let {
-
-                    val groups: Map<Int, List<Item>> = it.groupBy { it.listId }
-                    groups.forEach { (listId, items) ->
-                        _groupedItems.value += GroupedItem(listId, items)
+                groupedItems.clear()
+                groupedItems.addAll(
+                    SortUtil.prepare(repository.fetchAll(), sortRule.value).let {
+                        it.groupBy { it.listId }
+                            .map { (listId, items) ->
+                                GroupedItem(listId, items)
+                            }
                     }
-
-                }
+                )
             } catch (e: Exception) {
                 if (e is UnknownHostException) {
                     snackbarHostState.showSnackbar(

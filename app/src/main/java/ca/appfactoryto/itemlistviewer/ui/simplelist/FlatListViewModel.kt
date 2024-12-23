@@ -2,6 +2,7 @@ package ca.appfactoryto.itemlistviewer.ui.simplelist
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +18,7 @@ import java.net.UnknownHostException
  */
 class FlatListViewModel(
     private val repository: ItemListRepository,
-    private val sortRule: SortRule,
+    private val sortRule: State<SortRule>,
     private val snackbarHostState: SnackbarHostState,
 ) : ViewModel() {
 
@@ -34,10 +35,14 @@ class FlatListViewModel(
     }
 
     init {
+        refresh()
+    }
+
+    fun refresh() {
         viewModelScope.launch {
             try {
                 items.clear()
-                items.addAll(SortUtil.prepare(repository.fetchAll(), sortRule))
+                items.addAll(SortUtil.prepare(repository.fetchAll(), sortRule.value))
             } catch (e: Exception) {
                 if (e is UnknownHostException) {
                     snackbarHostState.showSnackbar(

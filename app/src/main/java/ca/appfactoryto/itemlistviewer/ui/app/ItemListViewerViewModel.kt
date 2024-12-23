@@ -40,7 +40,8 @@ class ItemListViewerViewModel : ViewModel() {
      * View model for the flat list view.
      */
     val flatViewModel: FlatListViewModel = FlatListViewModel(
-        repository, selectedSortRule.value,
+        repository,
+        selectedSortRule,
         snackbarHostState
     )
 
@@ -48,7 +49,8 @@ class ItemListViewerViewModel : ViewModel() {
      * View model for the grouped list view.
      */
     val groupedViewModel: GroupedListViewModel = GroupedListViewModel(
-        repository, selectedSortRule.value,
+        repository,
+        selectedSortRule,
         snackbarHostState
     )
 
@@ -62,6 +64,8 @@ class ItemListViewerViewModel : ViewModel() {
      */
     val onSortRuleChanged: (SortRule) -> Unit = {
         selectedSortRule.value = it
+        flatViewModel.refresh()
+        groupedViewModel.refresh()
     }
 
     /**

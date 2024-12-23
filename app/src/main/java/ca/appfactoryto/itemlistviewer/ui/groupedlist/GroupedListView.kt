@@ -40,7 +40,7 @@ fun GroupedListView(
         verticalArrangement = Arrangement.spacedBy(2.dp),
         state = model.listState
     ) {
-        model.groupedItems.value.forEachIndexed { index, item ->
+        model.groupedItems.forEachIndexed { index, item ->
 
             val topPadding = if (index == 0) 16.dp else 8.dp
 
