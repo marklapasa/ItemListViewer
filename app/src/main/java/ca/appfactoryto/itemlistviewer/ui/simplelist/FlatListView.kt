@@ -16,12 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ca.appfactoryto.itemlistviewer.R
 import ca.appfactoryto.itemlistviewer.data.EmbeddedItemRepository
+import ca.appfactoryto.itemlistviewer.ui.StringProvider
 import ca.appfactoryto.itemlistviewer.ui.app.LoadingScreen
 import ca.appfactoryto.itemlistviewer.ui.app.SortRule
 import ca.appfactoryto.itemlistviewer.ui.theme.CORNER_RADIUS
@@ -84,7 +86,8 @@ fun ListViewPreview() {
             model = FlatListViewModel(
                 repository = EmbeddedItemRepository,
                 sortRule = sortRule,
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
+                stringProvider = StringProvider(LocalContext.current)
             )
         )
     }

@@ -6,10 +6,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ca.appfactoryto.itemlistviewer.R
 import ca.appfactoryto.itemlistviewer.domain.GroupedItem
 import ca.appfactoryto.itemlistviewer.domain.Item
 import ca.appfactoryto.itemlistviewer.domain.ItemListRepository
 import ca.appfactoryto.itemlistviewer.ui.SortUtil
+import ca.appfactoryto.itemlistviewer.ui.StringProvider
 import ca.appfactoryto.itemlistviewer.ui.app.SortRule
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
@@ -20,7 +22,8 @@ import java.net.UnknownHostException
 class GroupedListViewModel(
     private val repository: ItemListRepository,
     private val sortRule: State<SortRule>,
-    private val snackbarHostState: SnackbarHostState
+    private val snackbarHostState: SnackbarHostState,
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     /**
@@ -69,11 +72,11 @@ class GroupedListViewModel(
             } catch (e: Exception) {
                 if (e is UnknownHostException) {
                     snackbarHostState.showSnackbar(
-                        message = "No internet connection"
+                        message = stringProvider.getString(R.string.no_internet_connection)
                     )
                 } else {
                     snackbarHostState.showSnackbar(
-                        message = e.message ?: "Unknown error"
+                        message = stringProvider.getString(R.string.unknown_error)
                     )
                 }
             }

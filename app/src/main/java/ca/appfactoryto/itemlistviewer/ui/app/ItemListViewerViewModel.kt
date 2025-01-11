@@ -6,8 +6,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import ca.appfactoryto.itemlistviewer.data.EmbeddedItemRepository
+import ca.appfactoryto.itemlistviewer.ItemListViewerApplication
 import ca.appfactoryto.itemlistviewer.data.RemoteItemRepository
 import ca.appfactoryto.itemlistviewer.domain.ItemListRepository
+import ca.appfactoryto.itemlistviewer.ui.StringProvider
 import ca.appfactoryto.itemlistviewer.ui.groupedlist.GroupedListViewModel
 import ca.appfactoryto.itemlistviewer.ui.simplelist.FlatListViewModel
 
@@ -42,7 +44,8 @@ class ItemListViewerViewModel : ViewModel() {
     val flatViewModel: FlatListViewModel = FlatListViewModel(
         repository,
         selectedSortRule,
-        snackbarHostState
+        snackbarHostState,
+        StringProvider(ItemListViewerApplication.instance)
     )
 
     /**
@@ -51,7 +54,8 @@ class ItemListViewerViewModel : ViewModel() {
     val groupedViewModel: GroupedListViewModel = GroupedListViewModel(
         repository,
         selectedSortRule,
-        snackbarHostState
+        snackbarHostState,
+        StringProvider(ItemListViewerApplication.instance)
     )
 
     companion object {

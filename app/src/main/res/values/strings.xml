@@ -12,4 +12,6 @@
     <string name="close">Close</string>
     <string name="open">Open</string>
     <string name="unknown">Unknown</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="unknown_error">Unknown error</string>
 </resources>
