@@ -8,9 +8,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
@@ -28,12 +25,6 @@ import ca.appfactoryto.itemlistviewer.ui.simplelist.FlatListView
 @Composable
 fun ItemListViewerApp(model: ItemListViewerViewModel) {
 
-    val snackbarHostState = remember { model.snackbarHostState }
-
-    val selectedTabIndex by rememberSaveable {
-        model.selectedTab
-    }
-
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
@@ -49,7 +40,7 @@ fun ItemListViewerApp(model: ItemListViewerViewModel) {
             )
         },
         content = { innerPadding ->
-            when (selectedTabIndex) {
+            when (model.selectedTab.value) {
                 FLAT_LIST_TAB_INDEX -> {
                     FlatListView(
                         modifier = Modifier.padding(innerPadding),
@@ -66,11 +57,11 @@ fun ItemListViewerApp(model: ItemListViewerViewModel) {
             }
         },
         snackbarHost = {
-            SnackbarHost(snackbarHostState)
+            SnackbarHost(model.snackbarHostState)
         },
         bottomBar = {
             ItemListViewerNavigation(
-                selectedTabIndex = selectedTabIndex,
+                selectedTabIndex = model.selectedTab.value,
                 onFlatListSelected = model.onFlatListSelected,
                 onGroupedListSelected = model.onGroupedListSelected
             )
